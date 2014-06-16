@@ -6,7 +6,11 @@
 <% case node[:redmine][:db][:type] -%>
 <% when 'mysql' -%>
 production:
+<% if node[:redmine][:db].attribute?("adapter") -%>
+  adapter: <%= node[:redmine][:db][:adapter] %>
+<% else -%>
   adapter: mysql
+<% end -%>
   database: redmine
   host: <%= @database_server %>
   username: <%= node[:redmine][:db][:username] %>
