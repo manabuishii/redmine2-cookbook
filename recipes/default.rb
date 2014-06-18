@@ -159,4 +159,14 @@ nginx_site 'default' do
   enable false
 end
 
+case node.platform
+when 'centos'
+  bash "move_etc_nginx_conf_d_default_conf" do
+    code <<-EOL
+    mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.backup
+    EOL
+    notifies :reload, "service[nginx]"
+  end
+end
+
 # Configure SCM e.g. Git
