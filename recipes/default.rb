@@ -166,6 +166,7 @@ when 'centos'
     mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.backup
     EOL
     notifies :reload, "service[nginx]"
+    not_if { ::File.exists?("/etc/nginx/conf.d/default.conf.backup") }
   end
 end
 
