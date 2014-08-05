@@ -20,7 +20,7 @@ server {
   # Заметка: Должен совпадать с префиксом заданным при конфигурации thin
   #          или / если никакого префикса не задано
 <% if node[:redmine].attribute?("prefix") -%>
-  location ~* ^<%= node[:redmine][:prefix] %>/(?<file>(javascripts|stylesheets|images|help|themes).*) {
+  location ~* ^<%= node[:redmine][:prefix] %>/(?<file>(javascripts|stylesheets|images|help|themes|plugin_assets).*) {
     alias <%= @app_path %>/public/$static_file;
   }
   location <%= node[:redmine][:prefix] %> {
