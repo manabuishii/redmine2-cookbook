@@ -90,6 +90,16 @@ template "#{node[:redmine][:home]}/redmine-#{node[:redmine][:version]}/config/co
   mode '0664'
 end
 
+# Configure environment.rb
+template "#{node[:redmine][:home]}/redmine-#{node[:redmine][:version]}/config/environment.rb" do
+  source 'environment.rb.erb'
+  owner node[:redmine][:user]
+  variables {}
+  mode '0644'
+  notifies :restart, "service[nginx]"
+  notifies :restart, "service[redmine]"
+end
+
 # Configure custom gems e.g. thin
 template "#{node[:redmine][:home]}/redmine-#{node[:redmine][:version]}/Gemfile.local" do
   source 'Gemfile.local.erb'
@@ -150,6 +160,8 @@ template "#{node[:nginx][:dir]}/sites-available/redmine" do
       app_path: "#{node[:redmine][:home]}/redmine",
       server_name: node[:redmine][:host]
   )
+  notifies :restart, "service[nginx]"
+  notifies :restart, "service[redmine]"
 end
 
 nginx_site 'redmine' do
